@@ -40,10 +40,6 @@ void main(void)
     InitApp();
     initMotor();
 
-    updateMotor(currentStep());
-    __delay_ms(100);
-    releaseMotor();
-
     while(1)
     {
 

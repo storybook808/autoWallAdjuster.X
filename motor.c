@@ -1,11 +1,13 @@
 #include "motor.h"
 
 /* Private variables */
-static uint8_t stepState;
+static uint8_t stepState, masterCount;
+static Direction directionState;
 
 static void initStep(void)
 {
-    stepState = 0;
+    resetStep();
+    resetMasterCount;
 }
 
 uint8_t currentStep(void)
@@ -39,6 +41,30 @@ void nextStep(Direction state)
     }
 }
 
+void resetStep(void)
+{
+    stepState = 0;
+}
+uint8_t currentMasterCount(void)
+{
+    return masterCount;
+}
+
+static void incrementMasterCount(void)
+{
+    masterCount++;
+}
+
+static void decrementMasterCount(void)
+{
+    masterCount--;
+}
+
+static void resetMasterCount(void)
+{
+    masterCount = 0;
+}
+
 void initMotor(void)
 {
     //Sent all motor ports to OUTPUT mode
@@ -48,6 +74,54 @@ void initMotor(void)
     MOTOR_TRIS_3 = 0;
 
     initStep();
+
+    /* TODO Motor calibration procedure */
+    setMotorDirection(BACKWARD);
+    //Enable the motor
+    //Wait until calibration limit switch has been triggered
+    //Disable the motor
+    //Reset master step counter
+    resetMasterCount();
+    setMotorDirection(FORWARD);
+}
+
+/* Write function for the directional state */
+void setMotorDirection(Direction state)
+{
+    directionState = state;
+}
+
+/* Read function for the directional state */
+Direction currentMotorDirection(void)
+{
+    return directionState;
+}
+
+void startMotor(void)
+{
+
+}
+
+void stopMotor(void)
+{
+
+}
+
+/* This function is for the interrupt to use to control the motor */
+void stepMoter(void)
+{
+    if (currentMotorDirection == FORWARD)
+    {
+        nextStep(FORWARD);
+        updateMotor(currentStep());
+        incrementMasterCount();
+    }
+    else
+    {
+        nextStep(BACKWARD);
+        updateMotor(currentStep());
+        decrementMasterCount();
+    }
 }
 
 void holdMotor(void)
