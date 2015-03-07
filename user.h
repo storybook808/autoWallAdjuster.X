@@ -2,7 +2,8 @@
 /* User Level #define Macros                                                  */
 /******************************************************************************/
 
-/* TODO Application specific user parameters used in user.c may go here */
+#define ENABLE_TMR0  T0CONbits.TMR0ON = 1
+#define DISABLE_TMR0 T0CONbits.TMR0ON = 0
 
 /******************************************************************************/
 /* User Function Prototypes                                                   */

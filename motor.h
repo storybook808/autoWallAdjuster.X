@@ -20,7 +20,7 @@ typedef enum
 uint8_t currentStep(void);
 void nextStep(Direction state);
 void resetStep(void);
-uint8_t currentMasterCount (void);
+int currentMasterCount (void);
 
 void initMotor(void);
 void setMotorDirection(Direction state);
